@@ -9,7 +9,12 @@ const port = process.env.PORT || 6000;
 const prisma = new PrismaClient();
 const app = express();
 
-app.get('/', async (req: Request, res: Response) => {
+//  Welcome page
+app.get('/', (req: Request, res: Response) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/api', async (req: Request, res: Response) => {
   const allPostsWithUsers = await prisma.post.findMany({
     include: { user: true },
   });

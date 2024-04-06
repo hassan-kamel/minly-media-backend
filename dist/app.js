@@ -12,7 +12,11 @@ const middlewares_1 = require("./shared/middlewares");
 const port = process.env.PORT || 6000;
 const prisma = new client_1.PrismaClient();
 const app = (0, express_1.default)();
-app.get('/', async (req, res) => {
+//  Welcome page
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+app.get('/api', async (req, res) => {
     const allPostsWithUsers = await prisma.post.findMany({
         include: { user: true },
     });
