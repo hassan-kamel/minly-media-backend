@@ -1,14 +1,22 @@
 import express, { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
 import { configDotenv } from 'dotenv';
 import path from 'path';
+import cors from 'cors';
+
 // Local Imports
 import { globalError } from './shared/middlewares';
+import { authRouter } from './auth';
+import { prisma } from './shared/utils/prismaClient';
+import ErrorApi from './shared/utils/errorApi';
 
 configDotenv({ path: '.env' });
 const port = process.env.PORT || 6000;
-const prisma = new PrismaClient();
+// Express
 const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
 
 //  Welcome page
 app.get('/', (req: Request, res: Response) => {
@@ -18,14 +26,16 @@ app.get('/', (req: Request, res: Response) => {
 
 app.get('/api', async (req: Request, res: Response) => {
   const allPostsWithUsers = await prisma.post.findMany({
-    include: { user: true },
+    include: { user: true }
   });
   console.log('allPostsWithUsers: ', allPostsWithUsers);
   res.json({
     message: 'Hello World',
-    posts: allPostsWithUsers,
+    posts: allPostsWithUsers
   });
 });
+
+app.use('/api/auth', authRouter);
 
 // (async function name() {
 //   const newUser = await prisma.user.create({
@@ -51,6 +61,10 @@ app.get('/api', async (req: Request, res: Response) => {
 
 // app.use('/api/v1', routes);
 
+// catch all
+app.all('*', (req, res, next) => {
+  next(new ErrorApi(`Can't find this route: ${req.originalUrl}`, 400));
+});
 // Error middleware
 app.use(globalError);
 

@@ -2,7 +2,7 @@
   "name": "minly-media-backend",
   "version": "1.0.0",
   "description": "backend server for sharing media platform API",
-  "main": "app.ts",
+  "main": "src/app.ts",
   "directories": {
     "test": "tests"
   },
@@ -28,11 +28,20 @@
   "homepage": "https://github.com/hassan-kamel/minly-media-backend#readme",
   "dependencies": {
     "@prisma/client": "^5.12.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.12.5",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
@@ -42,6 +51,7 @@
     "prettier": "^3.2.5",
     "prisma": "^5.12.1",
     "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.4"
   }
 }

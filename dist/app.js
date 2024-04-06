@@ -4,30 +4,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const client_1 = require("@prisma/client");
 const dotenv_1 = require("dotenv");
 const path_1 = __importDefault(require("path"));
+const cors_1 = __importDefault(require("cors"));
 // Local Imports
 const middlewares_1 = require("./shared/middlewares");
+const auth_1 = require("./auth");
+const prismaClient_1 = require("./shared/utils/prismaClient");
+const errorApi_1 = __importDefault(require("./shared/utils/errorApi"));
 (0, dotenv_1.configDotenv)({ path: '.env' });
 const port = process.env.PORT || 6000;
-const prisma = new client_1.PrismaClient();
+// Express
 const app = (0, express_1.default)();
+// Middleware
+app.use((0, cors_1.default)());
+app.use(express_1.default.json());
 //  Welcome page
 app.get('/', (req, res) => {
     console.log('__dirname: ', __dirname);
     res.sendFile(path_1.default.join(__dirname, '../public/index.html'));
 });
 app.get('/api', async (req, res) => {
-    const allPostsWithUsers = await prisma.post.findMany({
-        include: { user: true },
+    const allPostsWithUsers = await prismaClient_1.prisma.post.findMany({
+        include: { user: true }
     });
     console.log('allPostsWithUsers: ', allPostsWithUsers);
     res.json({
         message: 'Hello World',
-        posts: allPostsWithUsers,
+        posts: allPostsWithUsers
     });
 });
+app.use('/api/auth', auth_1.authRouter);
 // (async function name() {
 //   const newUser = await prisma.user.create({
 //     data: {
@@ -49,6 +56,10 @@ app.get('/api', async (req, res) => {
 //   console.log('Post created:', newPost);
 // })();
 // app.use('/api/v1', routes);
+// catch all
+app.all('*', (req, res, next) => {
+    next(new errorApi_1.default(`Can't find this route: ${req.originalUrl}`, 400));
+});
 // Error middleware
 app.use(middlewares_1.globalError);
 app.listen(port, () => {

@@ -11,6 +11,6 @@ export const globalError = (err: ErrorApi, req: Request, res: Response, next: Ne
     status: err.status,
     error: err,
     message: err.message,
-    stack: err.stack,
+    stack: err.stack
   });
 };
