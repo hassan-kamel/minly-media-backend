@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Define the User model
+model User {
+  id        String   @id @default(uuid())
+  fullName  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Post[]
+
+  // Define a many-to-many relationship with Media
+  likedPost Post[] @relation("LikedPost")
+}
+
+// Define the Post model
+model Post {
+  id        String    @id @default(uuid())
+  caption   String
+  mediaUrl  String
+  type      MediaType
+  userId    String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  // Define a one-to-many relationship with User that own the post
+  user    User   @relation(fields: [userId], references: [id])
+  // Define a many-to-many relationship with User for likes
+  likedBy User[] @relation("LikedPost")
+}
+
+// Enum for the type of media content
+enum MediaType {
+  IMAGE
+  VIDEO
+}

@@ -1,0 +1,46 @@
+{
+  "name": "minly-media-backend",
+  "version": "1.0.0",
+  "description": "backend server for sharing media platform API",
+  "main": "app.ts",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "lint": "eslint src/**/*.ts",
+    "format": "eslint src/**/*.ts --fix",
+    "start": "ts-node .",
+    "dev": "nodemon src/app.ts",
+    "build": "tsc",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hassan-kamel/minly-media-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hassan-kamel/minly-media-backend/issues"
+  },
+  "homepage": "https://github.com/hassan-kamel/minly-media-backend#readme",
+  "dependencies": {
+    "@prisma/client": "^5.12.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.12.5",
+    "@typescript-eslint/eslint-plugin": "^7.5.0",
+    "@typescript-eslint/parser": "^7.5.0",
+    "eslint": "^8.57.0",
+    "husky": "^9.0.11",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5",
+    "prisma": "^5.12.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.4"
+  }
+}
