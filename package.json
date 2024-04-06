@@ -9,9 +9,11 @@
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix",
-    "start": "ts-node .",
-    "dev": "nodemon src/app.ts",
-    "build": "tsc"
+    "build": "rimraf dist && npx tsc",
+    "prestart": "npm run build",
+    "start": "node dist/app.js",
+    "preserve": "npm run build",
+    "serve": "concurrently \"npx tsc -w\"  \"nodemon dist/app.js\""
   },
   "repository": {
     "type": "git",
@@ -34,11 +36,12 @@
     "@types/node": "^20.12.5",
     "@typescript-eslint/eslint-plugin": "^7.5.0",
     "@typescript-eslint/parser": "^7.5.0",
+    "concurrently": "^8.2.2",
     "eslint": "^8.57.0",
     "nodemon": "^3.1.0",
     "prettier": "^3.2.5",
     "prisma": "^5.12.1",
-    "ts-node": "^10.9.2",
+    "rimraf": "^5.0.5",
     "typescript": "^5.4.4"
   }
 }

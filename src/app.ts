@@ -1,8 +1,9 @@
 import express, { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
 import { configDotenv } from 'dotenv';
+import path from 'path';
 // Local Imports
-import { errorHandler } from './shared/middlewares';
+import { globalError } from './shared/middlewares';
 
 configDotenv({ path: '.env' });
 const port = process.env.PORT || 6000;
@@ -11,13 +12,15 @@ const app = express();
 
 //  Welcome page
 app.get('/', (req: Request, res: Response) => {
-  res.sendFile(__dirname + '/index.html');
+  console.log('__dirname: ', __dirname);
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 app.get('/api', async (req: Request, res: Response) => {
   const allPostsWithUsers = await prisma.post.findMany({
     include: { user: true },
   });
+  console.log('allPostsWithUsers: ', allPostsWithUsers);
   res.json({
     message: 'Hello World',
     posts: allPostsWithUsers,
@@ -48,7 +51,8 @@ app.get('/api', async (req: Request, res: Response) => {
 
 // app.use('/api/v1', routes);
 
-app.use(errorHandler);
+// Error middleware
+app.use(globalError);
 
 app.listen(port, () => {
   console.log(`app is  listening on port ${port}`);

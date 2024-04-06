@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const client_1 = require("@prisma/client");
 const dotenv_1 = require("dotenv");
+const path_1 = __importDefault(require("path"));
 // Local Imports
 const middlewares_1 = require("./shared/middlewares");
 (0, dotenv_1.configDotenv)({ path: '.env' });
@@ -14,12 +15,14 @@ const prisma = new client_1.PrismaClient();
 const app = (0, express_1.default)();
 //  Welcome page
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+    console.log('__dirname: ', __dirname);
+    res.sendFile(path_1.default.join(__dirname, '../public/index.html'));
 });
 app.get('/api', async (req, res) => {
     const allPostsWithUsers = await prisma.post.findMany({
         include: { user: true },
     });
+    console.log('allPostsWithUsers: ', allPostsWithUsers);
     res.json({
         message: 'Hello World',
         posts: allPostsWithUsers,
@@ -46,7 +49,8 @@ app.get('/api', async (req, res) => {
 //   console.log('Post created:', newPost);
 // })();
 // app.use('/api/v1', routes);
-app.use(middlewares_1.errorHandler);
+// Error middleware
+app.use(middlewares_1.globalError);
 app.listen(port, () => {
     console.log(`app is  listening on port ${port}`);
 });

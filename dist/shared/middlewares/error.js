@@ -1,13 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.errorHandler = void 0;
-function errorHandler(err, req, res) {
-    const statusCode = res.statusCode !== 200 ? res.statusCode : 500;
-    res.status(statusCode);
-    res.json({
+exports.globalError = void 0;
+const globalError = (err, req, res, next) => {
+    console.log('err: ', err);
+    err.statusCode = err.statusCode || 500;
+    err.status = err.status || 'Error';
+    //   const error = { ...err, status, statusCode };
+    //   console.log('error: ', error);
+    return res.status(err.statusCode).json({
+        status: err.status,
+        error: err,
         message: err.message,
         stack: err.stack,
     });
-}
-exports.errorHandler = errorHandler;
+};
+exports.globalError = globalError;
 //# sourceMappingURL=error.js.map
