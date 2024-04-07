@@ -11,7 +11,8 @@ const cors_1 = __importDefault(require("cors"));
 const middlewares_1 = require("./shared/middlewares");
 const auth_1 = require("./auth");
 const prismaClient_1 = require("./shared/utils/prismaClient");
-const errorApi_1 = __importDefault(require("./shared/utils/errorApi"));
+const AppError_1 = __importDefault(require("./shared/utils/AppError"));
+const StatusCodes_1 = require("./shared/utils/StatusCodes");
 (0, dotenv_1.configDotenv)({ path: '.env' });
 const port = process.env.PORT || 6000;
 // Express
@@ -58,7 +59,7 @@ app.use('/api/auth', auth_1.authRouter);
 // app.use('/api/v1', routes);
 // catch all
 app.all('*', (req, res, next) => {
-    next(new errorApi_1.default(`Can't find this route: ${req.originalUrl}`, 400));
+    next(new AppError_1.default(`Can't find this route: ${req.originalUrl}`, StatusCodes_1.StatusCodes.NOT_FOUND, 'Not Found'));
 });
 // Error middleware
 app.use(middlewares_1.globalError);

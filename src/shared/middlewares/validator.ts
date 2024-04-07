@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { AnyZodObject } from 'zod';
+import { AnyZodObject, ZodError } from 'zod';
+import { StatusCodes } from '../utils/StatusCodes';
+import AppError from '../utils/AppError';
 
 export const validate =
   (schema: AnyZodObject) => async (req: Request, res: Response, next: NextFunction) => {
@@ -10,7 +12,9 @@ export const validate =
         params: req.params
       });
       return next();
-    } catch (error) {
-      return res.status(400).json(error);
+    } catch (error: ZodError | unknown) {
+      return next(
+        new AppError('Validation error', StatusCodes.BAD_REQUEST, (error as ZodError).issues)
+      );
     }
   };

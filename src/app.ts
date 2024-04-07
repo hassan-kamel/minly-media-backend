@@ -7,7 +7,8 @@ import cors from 'cors';
 import { globalError } from './shared/middlewares';
 import { authRouter } from './auth';
 import { prisma } from './shared/utils/prismaClient';
-import ErrorApi from './shared/utils/errorApi';
+import AppError from './shared/utils/AppError';
+import { StatusCodes } from './shared/utils/StatusCodes';
 
 configDotenv({ path: '.env' });
 const port = process.env.PORT || 6000;
@@ -63,7 +64,9 @@ app.use('/api/auth', authRouter);
 
 // catch all
 app.all('*', (req, res, next) => {
-  next(new ErrorApi(`Can't find this route: ${req.originalUrl}`, 400));
+  next(
+    new AppError(`Can't find this route: ${req.originalUrl}`, StatusCodes.NOT_FOUND, 'Not Found')
+  );
 });
 // Error middleware
 app.use(globalError);

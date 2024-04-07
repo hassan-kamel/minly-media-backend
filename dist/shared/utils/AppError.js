@@ -1,13 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class ErrorApi extends Error {
+class AppError extends Error {
     statusCode;
     status;
-    constructor(message, statusCode) {
+    error;
+    constructor(message, statusCode, error) {
         super(message);
         this.statusCode = statusCode;
         this.status = `${statusCode}`.startsWith('4') ? 'failed' : 'error';
+        this.error = error;
     }
 }
-exports.default = ErrorApi;
-//# sourceMappingURL=errorApi.js.map
+exports.default = AppError;
+//# sourceMappingURL=AppError.js.map

@@ -1,6 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validate = void 0;
+const StatusCodes_1 = require("../utils/StatusCodes");
+const AppError_1 = __importDefault(require("../utils/AppError"));
 const validate = (schema) => async (req, res, next) => {
     try {
         await schema.parseAsync({
@@ -11,7 +16,7 @@ const validate = (schema) => async (req, res, next) => {
         return next();
     }
     catch (error) {
-        return res.status(400).json(error);
+        return next(new AppError_1.default('Validation error', StatusCodes_1.StatusCodes.BAD_REQUEST, error.issues));
     }
 };
 exports.validate = validate;

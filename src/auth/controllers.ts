@@ -1,17 +1,16 @@
-import jwt from 'jsonwebtoken';
+import { NextFunction, Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import asyncHandler from 'express-async-handler';
 
-import ErrorApi from '../shared/utils/errorApi';
+import AppError from '../shared/utils/AppError';
 import createToken from '../shared/utils/createToken';
 import { prisma } from '../shared/utils/prismaClient';
 import { IUser } from '../shared/interfaces/user';
-import { NextFunction, Request, Response } from 'express';
+import { tryCatch } from '../shared/middlewares/tryCatch';
+import { StatusCodes } from '../shared/utils/StatusCodes';
 
 const { compare } = bcrypt;
-const { verify } = jwt;
 
-export const signup = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
+export const signup = tryCatch(async (req: Request, res: Response) => {
   // 1- Create user
   const { fullName, email, password } = req.body;
   const user: IUser = await prisma.user.create({
@@ -29,14 +28,16 @@ export const signup = asyncHandler(async (req: Request, res: Response, next: Nex
   res.status(201).json({ user: { ...user, password: undefined }, token });
 });
 
-export const login = asyncHandler(async (req, res, next) => {
+export const login = tryCatch(async (req: Request, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
   // 2) check if user exist & check if password is correct
   const user = await prisma.user.findUnique({ where: { email } });
   console.log('user: ', user);
 
   if (!user || !(await compare(password, user.password))) {
-    return next(new ErrorApi('Incorrect email or password', 401));
+    return next(
+      new AppError('Incorrect email or password', StatusCodes.UNAUTHORIZED, 'wrong credentials')
+    );
   }
   // 3) generate token
   const token = createToken(user);
