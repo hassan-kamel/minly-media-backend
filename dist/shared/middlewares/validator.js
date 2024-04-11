@@ -16,6 +16,7 @@ const validate = (schema) => async (req, res, next) => {
         return next();
     }
     catch (error) {
+        console.log('error: ', error);
         return next(new AppError_1.default('Validation error', StatusCodes_1.StatusCodes.BAD_REQUEST, error.issues));
     }
 };

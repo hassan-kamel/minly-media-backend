@@ -15,9 +15,9 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  posts     Post[]
 
   // Define a many-to-many relationship with Media
+  posts     Post[]
   likedPosts Post[] @relation("LikedPost")
 }
 
@@ -27,12 +27,13 @@ model Post {
   caption   String
   mediaUrl  String
   type      MediaType
-  userId    String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
   // Define a one-to-many relationship with User that own the post
-  user    User   @relation(fields: [userId], references: [id])
+  authorId    String
+  author    User   @relation(fields: [authorId], references: [id])
+
   // Define a many-to-many relationship with User for likes
   likedBy User[] @relation("LikedPost")
 }

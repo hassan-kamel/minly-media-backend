@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { prisma } from '../shared/utils/prismaClient';
+
 z.custom(async (email) => {
   const user = await prisma.user.findUnique({ where: { email: email as string } });
   return user ? false : true;

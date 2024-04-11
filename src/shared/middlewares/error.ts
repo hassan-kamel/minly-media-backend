@@ -1,7 +1,17 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import AppError from '../utils/AppError';
-export const globalError = (err: AppError, req: Request, res: Response, next: NextFunction) => {
+import multer from 'multer';
+import { StatusCodes } from '../utils/StatusCodes';
+export const globalError = (err: AppError, req: Request, res: Response) => {
   console.log('err: ', err);
+
+  if (err instanceof multer.MulterError) {
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      error: err,
+      message: 'file size limit exceeded, maximum file size is 100MB',
+      stack: err.stack
+    });
+  }
 
   return res.status(err.statusCode).json({
     error: err,

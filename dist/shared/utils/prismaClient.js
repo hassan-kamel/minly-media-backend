@@ -10,6 +10,8 @@ exports.prisma = new client_1.PrismaClient().$extends({
     query: {
         user: {
             async create({ model, operation, args, query }) {
+                console.log('operation: ', operation);
+                console.log('model: ', model);
                 args.data.password = await bcryptjs_1.default.hash(args.data.password, 12);
                 return query(args);
             }

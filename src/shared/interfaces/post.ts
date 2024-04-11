@@ -9,6 +9,5 @@ export interface IPost {
   userId: string;
   createdAt: Date;
   updatedAt: Date;
-  user: IUser;
   likedBy?: IUser[];
 }

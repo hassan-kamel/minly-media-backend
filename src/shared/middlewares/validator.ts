@@ -13,6 +13,7 @@ export const validate =
       });
       return next();
     } catch (error: ZodError | unknown) {
+      console.log('error: ', error);
       return next(
         new AppError('Validation error', StatusCodes.BAD_REQUEST, (error as ZodError).issues)
       );
