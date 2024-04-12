@@ -32,6 +32,25 @@ export const createPost = tryCatch(async (req: Request, res: Response) => {
         ? MediaTypeEnum.VIDEO
         : MediaTypeEnum.IMAGE,
       author: { connect: { id: req.user?.id } }
+    },
+    select: {
+      id: true,
+      caption: true,
+      mediaUrl: true,
+      createdAt: true,
+      type: true,
+      likedBy: {
+        select: {
+          id: true,
+          fullName: true
+        }
+      },
+      author: {
+        select: {
+          id: true,
+          fullName: true
+        }
+      }
     }
   });
 

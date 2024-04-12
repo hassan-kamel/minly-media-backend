@@ -29,6 +29,25 @@ exports.createPost = (0, tryCatch_1.tryCatch)(async (req, res) => {
                 ? mediaType_1.MediaTypeEnum.VIDEO
                 : mediaType_1.MediaTypeEnum.IMAGE,
             author: { connect: { id: req.user?.id } }
+        },
+        select: {
+            id: true,
+            caption: true,
+            mediaUrl: true,
+            createdAt: true,
+            type: true,
+            likedBy: {
+                select: {
+                    id: true,
+                    fullName: true
+                }
+            },
+            author: {
+                select: {
+                    id: true,
+                    fullName: true
+                }
+            }
         }
     });
     res.status(StatusCodes_1.StatusCodes.CREATED).json({ post });
