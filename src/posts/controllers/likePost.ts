@@ -9,7 +9,16 @@ export const likePost = tryCatch(async (req: Request, res: Response) => {
   const post = await prisma.post.update({
     where: { id },
     data: { likedBy: { connect: { id: userId } } },
-    include: { likedBy: true }
+    select: {
+      id: true,
+      type: true,
+      likedBy: {
+        select: {
+          id: true,
+          fullName: true
+        }
+      }
+    }
   });
   res.status(StatusCodes.OK).json({ post });
 });

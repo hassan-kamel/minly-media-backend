@@ -7,6 +7,7 @@ const tryCatch_1 = require("../../shared/middlewares/tryCatch");
 const prismaClient_1 = require("../../shared/utils/prismaClient");
 const s3Client_1 = require("../../shared/utils/s3Client");
 const StatusCodes_1 = require("../../shared/utils/StatusCodes");
+const s3_request_presigner_1 = require("@aws-sdk/s3-request-presigner");
 exports.createPost = (0, tryCatch_1.tryCatch)(async (req, res) => {
     console.log('req.file: ', req.file);
     console.log('req.body.user: ', req.body.user);
@@ -50,6 +51,12 @@ exports.createPost = (0, tryCatch_1.tryCatch)(async (req, res) => {
             }
         }
     });
-    res.status(StatusCodes_1.StatusCodes.CREATED).json({ post });
+    // generate signed url for the post
+    const mediaName = post?.mediaUrl;
+    const tempUrl = await (0, s3_request_presigner_1.getSignedUrl)(s3Client_1.s3Client, new client_s3_1.GetObjectCommand({
+        Bucket: s3Client_1.bucketName,
+        Key: mediaName
+    }));
+    res.status(StatusCodes_1.StatusCodes.CREATED).json({ ...post, mediaUrl: tempUrl });
 });
 //# sourceMappingURL=createPost.js.map
