@@ -6,7 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.globalError = void 0;
 const multer_1 = __importDefault(require("multer"));
 const StatusCodes_1 = require("../utils/StatusCodes");
-const globalError = (err, req, res) => {
+const globalError = (err, req, res, next) => {
+    console.log('next: ', next);
     console.log('err: ', err);
     if (err instanceof multer_1.default.MulterError) {
         return res.status(StatusCodes_1.StatusCodes.BAD_REQUEST).json({

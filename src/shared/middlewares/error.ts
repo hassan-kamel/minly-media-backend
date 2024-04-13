@@ -1,8 +1,9 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import AppError from '../utils/AppError';
 import multer from 'multer';
 import { StatusCodes } from '../utils/StatusCodes';
-export const globalError = (err: AppError, req: Request, res: Response) => {
+export const globalError = (err: AppError, req: Request, res: Response, next: NextFunction) => {
+  console.log('next: ', next);
   console.log('err: ', err);
 
   if (err instanceof multer.MulterError) {
