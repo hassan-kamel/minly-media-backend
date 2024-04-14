@@ -94,7 +94,7 @@ AWS_SECRET_ACCESS_KEY
 ### Post Get Paginated
 
 ```http
-  GET /api/posts?pageNumber=${pageNumber}&pageSize=${pageSize}
+GET /api/posts?pageNumber=${pageNumber}&pageSize=${pageSize}
 ```
 
 | Parameter    | Type     | Description   |
@@ -105,7 +105,7 @@ AWS_SECRET_ACCESS_KEY
 ### Get Single Post
 
 ```http
-  GET /api/post/${id}
+GET /api/post/${id}
 ```
 
 | Parameter | Type     | Description                       |
@@ -117,7 +117,7 @@ AWS_SECRET_ACCESS_KEY
 <img width="150" alt='adblock' src='https://img.shields.io/badge/Secure_Endpoint-100000?style=for-the-badge&logo=adblock&logoColor=6F2121&labelColor=FFFFFF&color=6D2626'/>
 
 ```http
-  POST /api/post
+POST /api/post
 ```
 
 | Parameter | Type              | Description   |
@@ -145,7 +145,7 @@ PUT /api/post/${id}
 <img width="150" alt='adblock' src='https://img.shields.io/badge/Secure_Endpoint-100000?style=for-the-badge&logo=adblock&logoColor=6F2121&labelColor=FFFFFF&color=6D2626'/>
 
 ```http
-  POST /api/post/like/${id}
+POST /api/post/like/${id}
 ```
 
 | Parameter | Type     | Description   |
@@ -158,7 +158,7 @@ PUT /api/post/${id}
 <img width="150" alt='adblock' src='https://img.shields.io/badge/Secure_Endpoint-100000?style=for-the-badge&logo=adblock&logoColor=6F2121&labelColor=FFFFFF&color=6D2626'/>
 
 ```http
-  POST /api/post/dislike/${id}
+POST /api/post/dislike/${id}
 ```
 
 | Parameter | Type     | Description   |
@@ -169,7 +169,7 @@ PUT /api/post/${id}
 ### Signup
 
 ```http
-  POST /api/auth/signup
+POST /api/auth/signup
 ```
 
 | Parameter  | Type     | Description   |
@@ -181,7 +181,7 @@ PUT /api/post/${id}
 ### Login
 
 ```http
-  POST /api/auth/login
+POST /api/auth/login
 ```
 
 | Parameter  | Type     | Description   |
